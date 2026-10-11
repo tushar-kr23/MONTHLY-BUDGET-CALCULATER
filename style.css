@@ -1336,7 +1336,7 @@ body {
   min-height: 100vh;
   background:
     linear-gradient(135deg, rgba(56, 178, 172, 0.12), rgba(128, 90, 213, 0.12)),
-    var(--bg-main);
+    var(--bg-app);
 }
 
 .auth-shell {

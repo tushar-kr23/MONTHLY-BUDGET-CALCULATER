@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to Tushar Monthly Budget Calculator 2026.">
+  <title>Sign In - TUSHAR Monthly Budget Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page" data-auth-page="login">
+  <main class="auth-shell">
+    <section class="auth-panel" aria-labelledby="loginTitle">
+      <a class="auth-brand-link" href="index.html" aria-label="Back to dashboard">
+        <span class="brand-avatar">T</span>
+        <span>
+          <strong>TUSHAR</strong>
+          <small>Budget 2026</small>
+        </span>
+      </a>
+
+      <div class="auth-copy">
+        <p class="auth-eyebrow">Welcome back</p>
+        <h1 id="loginTitle">Sign in to your budget dashboard</h1>
+        <p>Access your monthly budget, expenses, and savings targets from this browser.</p>
+      </div>
+
+      <div class="auth-alert" id="authAlert" role="alert"></div>
+
+      <form class="auth-form" id="authForm" novalidate>
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" required>
+            <button type="button" class="btn-password-toggle" data-password-toggle="password">Show</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
+      </form>
+
+      <p class="auth-footer">New here? <a href="register.html">Create an account</a></p>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

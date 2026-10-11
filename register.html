@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create an account for Tushar Monthly Budget Calculator 2026.">
+  <title>Register - TUSHAR Monthly Budget Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page" data-auth-page="register">
+  <main class="auth-shell">
+    <section class="auth-panel" aria-labelledby="registerTitle">
+      <a class="auth-brand-link" href="index.html" aria-label="Back to dashboard">
+        <span class="brand-avatar">T</span>
+        <span>
+          <strong>TUSHAR</strong>
+          <small>Budget 2026</small>
+        </span>
+      </a>
+
+      <div class="auth-copy">
+        <p class="auth-eyebrow">Create account</p>
+        <h1 id="registerTitle">Start tracking with your own profile</h1>
+        <p>Your account stays in this browser and keeps the dashboard feeling personal.</p>
+      </div>
+
+      <div class="auth-alert" id="authAlert" role="alert"></div>
+
+      <form class="auth-form" id="authForm" novalidate>
+        <div class="form-group">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input type="text" id="fullName" class="form-control" placeholder="Your name" autocomplete="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="password" class="form-control" placeholder="At least 6 characters" autocomplete="new-password" required>
+            <button type="button" class="btn-password-toggle" data-password-toggle="password">Show</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter your password" autocomplete="new-password" required>
+            <button type="button" class="btn-password-toggle" data-password-toggle="confirmPassword">Show</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Create Account</button>
+      </form>
+
+      <p class="auth-footer">Already have an account? <a href="login.html">Sign in</a></p>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

@@ -55,9 +55,13 @@ This application provides:
 - **Data Portability**:
   - **Export to CSV**: Instant download formatted with UTF-8 BOM for Microsoft Excel & Google Sheets.
   - **Reset Month**: Reset current month's expenses and budget back to defaults with confirmation.
+- **Browser-Based Account Flow**:
+  - Register a local profile with name, email, and password.
+  - Sign in and see a personalized greeting in the dashboard header.
+  - Logout clears the active browser session while keeping saved budget data intact.
 ---
 ## 3. Project Structure
-Monthly-Budget-Calculator/ ├── index.html # HTML5 structure, semantic layouts, SVG rings, modals ├── style.css # Vanilla CSS3, pastel design system, responsive breakpoints ├── script.js # Vanilla JS state manager, calculations, LocalStorage, Chart.js └── README.md # Complete documentation and setup guide
+Monthly-Budget-Calculator/ ├── index.html # HTML5 dashboard structure, SVG rings, modals ├── login.html # Sign-in page ├── register.html # Account registration page ├── style.css # Vanilla CSS3, pastel design system, responsive breakpoints ├── script.js # Dashboard state manager, calculations, LocalStorage, Chart.js ├── auth.js # Local browser account registration and login logic └── README.md # Complete documentation and setup guide
 
 
 
@@ -72,7 +76,7 @@ C:\Users\Tushar.gemini\antigravity\scratch\Monthly-Budget-Calculator
 
 
 4. Click **Select Folder**.
-5. You will see the four project files (`index.html`, `style.css`, `script.js`, `README.md`) in the VS Code File Explorer sidebar.
+5. You will see the project files (`index.html`, `login.html`, `register.html`, `style.css`, `script.js`, `auth.js`, `README.md`) in the VS Code File Explorer sidebar.
 ---
 ## 5. How to Run Using VS Code Live Server
 Running the application through a local web server like Live Server prevents browser CORS restrictions when loading scripts and icons.
@@ -90,6 +94,7 @@ http://127.0.0.1:5500/index.html
 ---
 ## 6. How LocalStorage Works
 All application data is persisted directly in your browser's **Web Storage API** under the key `tushar_budget_calculator_2026`.
+Registered browser profiles are stored under `tushar_budget_users`, and the active session is stored under `tushar_budget_current_user`.
 ### Data Schema:
 ```json
 {
