@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create an account on Budgetly - The minimal, elegant personal monthly budget tracker.">
+  <title>Budgetly — Create Account</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Shared Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <main class="auth-card" id="registerCard">
+      
+      <!-- Brand Logo / Title -->
+      <div class="auth-brand">
+        <div class="auth-logo-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <span class="brand-name">Budgetly</span>
+      </div>
+
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-subtitle">Start organizing your personal monthly budget</p>
+
+      <!-- Error / Status Alert Banner -->
+      <div class="auth-alert" id="authAlert" role="alert" aria-live="polite"></div>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="auth-form" novalidate>
+        
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="fullNameInput" class="form-label">Full Name</label>
+          <input 
+            type="text" 
+            id="fullNameInput" 
+            class="form-control" 
+            placeholder="e.g. Tushar Sharma" 
+            required 
+            autocomplete="name"
+          >
+          <span class="field-error" id="nameError"></span>
+        </div>
+
+        <!-- Email Address -->
+        <div class="form-group">
+          <label for="emailInput" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="emailInput" 
+            class="form-control" 
+            placeholder="you@example.com" 
+            required 
+            autocomplete="email"
+          >
+          <span class="field-error" id="emailError"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="passwordInput" class="form-label">Password</label>
+          <div class="password-input-wrapper">
+            <input 
+              type="password" 
+              id="passwordInput" 
+              class="form-control" 
+              placeholder="At least 6 characters" 
+              required 
+              minlength="6" 
+              autocomplete="new-password"
+            >
+            <button 
+              type="button" 
+              class="btn-password-toggle" 
+              id="btnTogglePassword" 
+              aria-label="Show password"
+              title="Show or hide password"
+            >
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="field-error" id="passwordError"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block" id="btnSubmitRegister">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Link to Login -->
+      <div class="auth-footer">
+        Already have an account? <a href="login.html" id="linkToLogin">Sign In</a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Registration Script (ES Module) -->
+  <script type="module">
+    import { registerUser, setupPasswordToggle, checkAuthRedirectIfLoggedIn } from "./auth.js";
+
+    // If user is already logged in, redirect them directly to dashboard
+    checkAuthRedirectIfLoggedIn();
+
+    // Setup Show/Hide Password toggle
+    setupPasswordToggle("passwordInput", "btnTogglePassword");
+
+    const registerForm = document.getElementById("registerForm");
+    const nameInput = document.getElementById("fullNameInput");
+    const emailInput = document.getElementById("emailInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const submitBtn = document.getElementById("btnSubmitRegister");
+    const alertBox = document.getElementById("authAlert");
+
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+
+    function clearErrors() {
+      nameError.textContent = "";
+      emailError.textContent = "";
+      passwordError.textContent = "";
+      alertBox.style.display = "none";
+    }
+
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      let hasError = false;
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!name) {
+        nameError.textContent = "Please enter your full name.";
+        hasError = true;
+      }
+
+      if (!email) {
+        emailError.textContent = "Please enter your email address.";
+        hasError = true;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailError.textContent = "Please enter a valid email address.";
+        hasError = true;
+      }
+
+      if (!password) {
+        passwordError.textContent = "Please enter a password.";
+        hasError = true;
+      } else if (password.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters long.";
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      try {
+        await registerUser({
+          name,
+          email,
+          password,
+          submitBtn,
+          alertBox
+        });
+      } catch (err) {
+        // Handled inside registerUser
+      }
+    });
+  </script>
+</body>
+</html>

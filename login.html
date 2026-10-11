@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to Budgetly - The minimal, elegant personal monthly budget tracker.">
+  <title>Budgetly — Sign In</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Shared Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <main class="auth-card" id="loginCard">
+      
+      <!-- Brand Logo / Title -->
+      <div class="auth-brand">
+        <div class="auth-logo-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <span class="brand-name">Budgetly</span>
+      </div>
+
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-subtitle">Sign in to manage your monthly budget</p>
+
+      <!-- Error / Status Alert Banner -->
+      <div class="auth-alert" id="authAlert" role="alert" aria-live="polite"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form" novalidate>
+        
+        <!-- Email Address -->
+        <div class="form-group">
+          <label for="emailInput" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="emailInput" 
+            class="form-control" 
+            placeholder="you@example.com" 
+            required 
+            autocomplete="email"
+          >
+          <span class="field-error" id="emailError"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="passwordInput" class="form-label">Password</label>
+          <div class="password-input-wrapper">
+            <input 
+              type="password" 
+              id="passwordInput" 
+              class="form-control" 
+              placeholder="Enter your password" 
+              required 
+              autocomplete="current-password"
+            >
+            <button 
+              type="button" 
+              class="btn-password-toggle" 
+              id="btnTogglePassword" 
+              aria-label="Show password"
+              title="Show or hide password"
+            >
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="field-error" id="passwordError"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block" id="btnSubmitLogin">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Link to Registration -->
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html" id="linkToRegister">Create an Account</a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Login Script (ES Module) -->
+  <script type="module">
+    import { loginUser, setupPasswordToggle, checkAuthRedirectIfLoggedIn } from "./auth.js";
+
+    // If user is already authenticated, redirect them directly to the dashboard
+    checkAuthRedirectIfLoggedIn();
+
+    // Setup Show/Hide Password toggle
+    setupPasswordToggle("passwordInput", "btnTogglePassword");
+
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("emailInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const submitBtn = document.getElementById("btnSubmitLogin");
+    const alertBox = document.getElementById("authAlert");
+
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+
+    function clearErrors() {
+      emailError.textContent = "";
+      passwordError.textContent = "";
+      alertBox.style.display = "none";
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      let hasError = false;
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email) {
+        emailError.textContent = "Please enter your email address.";
+        hasError = true;
+      }
+
+      if (!password) {
+        passwordError.textContent = "Please enter your password.";
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      try {
+        await loginUser({
+          email,
+          password,
+          submitBtn,
+          alertBox
+        });
+      } catch (err) {
+        // Handled inside loginUser
+      }
+    });
+  </script>
+</body>
+</html>
