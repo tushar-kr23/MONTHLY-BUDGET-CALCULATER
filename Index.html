@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -602,4 +603,610 @@
   <!-- Application Script -->
   <script src="script.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tushar - Monthly Budget Calculator 2026. A premium, modern personal finance tracker built for college students to track expenses, manage budgets, and visualize savings with pastel progress rings.">
+  <title>TUSHAR — Monthly Budget Calculator 2026</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- LEFT SIDEBAR: 12 MONTHS OF 2026 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-badge">
+          <span class="brand-avatar">T</span>
+          <div class="brand-text">
+            <h1 class="brand-title">TUSHAR</h1>
+            <p class="brand-subtitle">BUDGET 2026</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-nav-title">
+        <span>SELECT MONTH</span>
+        <span class="year-badge">2026</span>
+      </div>
+
+      <!-- Month Navigation List (Jan to Dec) -->
+      <nav class="month-nav" aria-label="Month Navigation">
+        <ul class="month-list" id="monthList">
+          <!-- Dynamically populated & interactive months -->
+        </ul>
+      </nav>
+
+      <!-- Sidebar Quick Stats / Actions Footer -->
+      <div class="sidebar-footer">
+        <div class="backup-actions">
+          <button type="button" class="btn btn-secondary btn-sm btn-block" id="btnExportCSV" title="Export Current Month to CSV">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export to CSV
+          </button>
+          <button type="button" class="btn btn-outline-danger btn-sm btn-block" id="btnResetMonth" title="Reset Current Month Data">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            Reset Month
+          </button>
+        </div>
+        <p class="author-tag">B.Tech CSE &bull; Personal Finance</p>
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="main-content" id="mainContent">
+      
+      <!-- TOP HEADER -->
+      <header class="dashboard-header">
+        <div class="header-titles">
+          <div class="header-eyebrow">
+            <span class="pulse-dot"></span>
+            <span>ACADEMIC &amp; PERSONAL BUDGET DASHBOARD</span>
+          </div>
+          <h2 class="dashboard-title">TUSHAR <span class="highlight-text">— MONTHLY BUDGET CALCULATOR</span></h2>
+          <p class="dashboard-subtitle">Active View: <strong id="currentMonthYearDisplay">January 2026</strong></p>
+        </div>
+
+        <div class="header-controls">
+          <!-- Mobile Month Selector Dropdown -->
+          <div class="mobile-month-picker">
+            <label for="mobileMonthSelect" class="sr-only">Choose Month</label>
+            <select id="mobileMonthSelect" class="form-control select-control" aria-label="Select month for 2026">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+
+          <!-- Quick Month Switcher Buttons -->
+          <div class="month-stepper">
+            <button type="button" class="btn btn-icon" id="btnPrevMonth" aria-label="Previous Month" title="Previous Month">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span class="stepper-label" id="stepperMonthName">Jan 2026</span>
+            <button type="button" class="btn btn-icon" id="btnNextMonth" aria-label="Next Month" title="Next Month">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- BUDGET & SAVINGS TARGET CONTROL PANEL -->
+      <section class="budget-control-panel card" aria-label="Monthly Budget Configuration">
+        <div class="panel-grid">
+          
+          <!-- Monthly Budget Config -->
+          <div class="panel-section">
+            <div class="section-label-group">
+              <span class="badge badge-mint">Allocated Budget</span>
+              <h3 class="panel-heading">Monthly Budget for <span id="budgetCardMonthName">January 2026</span></h3>
+            </div>
+            <div class="budget-input-wrapper">
+              <div class="input-with-symbol">
+                <span class="currency-symbol">₹</span>
+                <input type="number" id="monthlyBudgetInput" class="form-control budget-input" placeholder="e.g. 9000" min="0" step="any" readonly aria-label="Monthly Budget in Rupees">
+              </div>
+              <div class="budget-btn-group">
+                <button type="button" class="btn btn-secondary" id="btnEditBudget">Edit Budget</button>
+                <button type="button" class="btn btn-primary" id="btnSaveBudget" style="display: none;">Save Budget</button>
+                <button type="button" class="btn btn-outline" id="btnCancelBudget" style="display: none;">Cancel</button>
+              </div>
+            </div>
+            <p class="helper-text" id="budgetInputHelper">Default planned budget: ₹9,000. Click "Edit Budget" to customize.</p>
+          </div>
+
+          <!-- Optional Savings Target Config -->
+          <div class="panel-section panel-section-alt">
+            <div class="section-label-group">
+              <span class="badge badge-lavender">Savings Target (Optional)</span>
+              <h3 class="panel-heading">Goal for this Month</h3>
+            </div>
+            <div class="budget-input-wrapper">
+              <div class="input-with-symbol">
+                <span class="currency-symbol">₹</span>
+                <input type="number" id="savingsTargetInput" class="form-control budget-input" placeholder="e.g. 2000" min="0" step="any" readonly aria-label="Monthly Savings Target in Rupees">
+              </div>
+              <div class="budget-btn-group">
+                <button type="button" class="btn btn-secondary" id="btnEditSavings">Set Target</button>
+                <button type="button" class="btn btn-primary" id="btnSaveSavings" style="display: none;">Save Target</button>
+                <button type="button" class="btn btn-outline" id="btnCancelSavings" style="display: none;">Cancel</button>
+              </div>
+            </div>
+            <p class="helper-text" id="savingsInputHelper">Target savings to strive towards this month.</p>
+          </div>
+
+        </div>
+
+        <!-- DYNAMIC SPENDING ALERT BANNER -->
+        <div class="budget-alert-banner alert-neutral" id="budgetAlertBanner" role="status" aria-live="polite">
+          <div class="alert-icon-wrapper" id="alertIconWrapper">
+            <svg class="icon alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="alert-content">
+            <strong class="alert-title" id="alertTitle">Budget Status</strong>
+            <p class="alert-desc" id="alertMessage">Loading spending analysis...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: FOUR MAIN SUMMARY CARDS -->
+      <section class="summary-cards-grid" aria-label="Monthly Financial Summary">
+        
+        <!-- CARD A: Monthly Budget -->
+        <article class="metric-card card-mint" id="cardMonthlyBudget">
+          <div class="card-top">
+            <span class="card-label">Monthly Budget</span>
+            <div class="card-icon-pill pill-mint">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+          </div>
+          <div class="card-value-display">
+            <h3 class="card-amount" id="displayMonthlyBudget">₹0</h3>
+          </div>
+          <div class="card-footer">
+            <span class="card-subtext">Assigned for <span class="active-month-text">this month</span></span>
+          </div>
+        </article>
+
+        <!-- CARD B: Total Expenses -->
+        <article class="metric-card card-blue" id="cardTotalExpenses">
+          <div class="card-top">
+            <span class="card-label">Total Expenses</span>
+            <div class="card-icon-pill pill-blue">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+          </div>
+          <div class="card-value-display">
+            <h3 class="card-amount" id="displayTotalExpenses">₹0</h3>
+          </div>
+          <div class="card-footer">
+            <span class="card-subtext" id="displayExpenseCount">0 transactions recorded</span>
+          </div>
+        </article>
+
+        <!-- CARD C: Remaining Balance -->
+        <article class="metric-card card-pink" id="cardRemainingBalance">
+          <div class="card-top">
+            <span class="card-label" id="remainingBalanceTitle">Remaining Balance</span>
+            <div class="card-icon-pill pill-pink" id="remainingIconPill">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 12l-4-4-4 4M12 16V8"/></svg>
+            </div>
+          </div>
+          <div class="card-value-display">
+            <h3 class="card-amount" id="displayRemainingBalance">₹0</h3>
+          </div>
+          <div class="card-footer">
+            <span class="card-subtext" id="remainingBalanceNotice">Available funds to spend</span>
+          </div>
+        </article>
+
+        <!-- CARD D: Savings -->
+        <article class="metric-card card-lavender" id="cardPotentialSavings">
+          <div class="card-top">
+            <span class="card-label">Potential Savings</span>
+            <div class="card-icon-pill pill-lavender">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+          </div>
+          <div class="card-value-display">
+            <h3 class="card-amount" id="displayPotentialSavings">₹0</h3>
+          </div>
+          <div class="card-footer">
+            <span class="card-subtext" id="displaySavingsGoalStatus">Unspent buffer saved</span>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- SECTION 7: FOUR CIRCULAR PROGRESS RINGS -->
+      <section class="progress-rings-section card" aria-label="Visual Circular Progress Indicators">
+        <div class="section-header-row">
+          <div>
+            <h3 class="section-title">Visual Progress Analytics</h3>
+            <p class="section-subtitle">Real-time circular indicators &amp; categorical allocation</p>
+          </div>
+          <span class="badge badge-sky">Live Calculations</span>
+        </div>
+
+        <div class="rings-grid">
+          
+          <!-- RING 1: Budget Used -->
+          <div class="ring-card" id="ringCardUsed">
+            <div class="svg-ring-container">
+              <svg class="progress-ring-svg" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+                <circle class="ring-track" cx="70" cy="70" r="56" />
+                <circle class="ring-progress ring-mint" id="ringProgressUsed" cx="70" cy="70" r="56" />
+              </svg>
+              <div class="ring-inner-content">
+                <span class="ring-percentage" id="ringValueUsed">0%</span>
+                <span class="ring-status-label" id="ringLabelUsed">Normal</span>
+              </div>
+            </div>
+            <h4 class="ring-title">Budget Used</h4>
+            <p class="ring-desc">Percentage of monthly budget exhausted</p>
+          </div>
+
+          <!-- RING 2: Remaining Budget -->
+          <div class="ring-card" id="ringCardRemaining">
+            <div class="svg-ring-container">
+              <svg class="progress-ring-svg" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+                <circle class="ring-track" cx="70" cy="70" r="56" />
+                <circle class="ring-progress ring-sky" id="ringProgressRemaining" cx="70" cy="70" r="56" />
+              </svg>
+              <div class="ring-inner-content">
+                <span class="ring-percentage" id="ringValueRemaining">100%</span>
+                <span class="ring-status-label">Available</span>
+              </div>
+            </div>
+            <h4 class="ring-title">Remaining Budget</h4>
+            <p class="ring-desc">Safe spending percentage left</p>
+          </div>
+
+          <!-- RING 3: Top Category Proportion Ring -->
+          <div class="ring-card" id="ringCardBreakdown">
+            <div class="svg-ring-container">
+              <svg class="progress-ring-svg" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+                <circle class="ring-track" cx="70" cy="70" r="56" />
+                <circle class="ring-progress ring-lavender" id="ringProgressTopCat" cx="70" cy="70" r="56" />
+              </svg>
+              <div class="ring-inner-content">
+                <span class="ring-percentage" id="ringValueTopCat">0%</span>
+                <span class="ring-status-label" id="ringNameTopCat">No Data</span>
+              </div>
+            </div>
+            <h4 class="ring-title">Top Expense Share</h4>
+            <p class="ring-desc">Highest expense category impact</p>
+          </div>
+
+          <!-- RING 4: Savings Progress Ring -->
+          <div class="ring-card" id="ringCardSavings">
+            <div class="svg-ring-container">
+              <svg class="progress-ring-svg" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+                <circle class="ring-track" cx="70" cy="70" r="56" />
+                <circle class="ring-progress ring-pink" id="ringProgressSavings" cx="70" cy="70" r="56" />
+              </svg>
+              <div class="ring-inner-content">
+                <span class="ring-percentage" id="ringValueSavings">0%</span>
+                <span class="ring-status-label" id="ringLabelSavings">Goal</span>
+              </div>
+            </div>
+            <h4 class="ring-title">Savings Target</h4>
+            <p class="ring-desc" id="ringDescSavings">Progress toward target savings</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- WORKBENCH GRID: ENTRY FORM & CATEGORY DONUT CHART -->
+      <div class="workbench-grid">
+        
+        <!-- SECTION 9: DAILY EXPENSE ENTRY FORM -->
+        <section class="card expense-form-card" aria-label="Daily Expense Entry Form">
+          <div class="card-head-title">
+            <div class="pill-badge pill-mint">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <div>
+              <h3 class="section-title">Add Daily Expense</h3>
+              <p class="section-subtitle">Record daily spending in Indian Rupees (₹)</p>
+            </div>
+          </div>
+
+          <form id="expenseForm" class="expense-form" novalidate>
+            <!-- Title -->
+            <div class="form-group">
+              <label for="expenseTitle" class="form-label">Expense Title <span class="required-star">*</span></label>
+              <input type="text" id="expenseTitle" class="form-control" placeholder="e.g. Paneer, Gym membership, Metro recharge" required autocomplete="off">
+              <span class="field-error" id="errorTitle"></span>
+            </div>
+
+            <!-- Amount & Date Row -->
+            <div class="form-row">
+              <div class="form-group form-col">
+                <label for="expenseAmount" class="form-label">Amount (₹) <span class="required-star">*</span></label>
+                <div class="input-with-symbol">
+                  <span class="currency-symbol">₹</span>
+                  <input type="number" id="expenseAmount" class="form-control" placeholder="80" min="0.01" step="any" required>
+                </div>
+                <span class="field-error" id="errorAmount"></span>
+              </div>
+
+              <div class="form-group form-col">
+                <label for="expenseDate" class="form-label">Date <span class="required-star">*</span></label>
+                <input type="date" id="expenseDate" class="form-control" required>
+                <span class="field-error" id="errorDate"></span>
+              </div>
+            </div>
+
+            <!-- Category Dropdown with Custom Option -->
+            <div class="form-group">
+              <div class="category-label-row">
+                <label for="expenseCategory" class="form-label">Category <span class="required-star">*</span></label>
+                <button type="button" class="btn-text-action" id="btnOpenCustomCatModal">+ Add Custom Category</button>
+              </div>
+              <select id="expenseCategory" class="form-control select-control" required>
+                <option value="" disabled selected>-- Select a category --</option>
+                <option value="Gym">🏋️ Gym (Membership, Equipment, Gym fees)</option>
+                <option value="Food & Diet">🥗 Food & Diet (Oats, Soya, Paneer, Milk, Fruits)</option>
+                <option value="Travel">🚌 Travel (Bus, Metro, Fuel, Transport)</option>
+                <option value="Mobile & Internet">📱 Mobile & Internet (Recharge, WiFi, Data)</option>
+                <option value="Education">📚 Education (Books, Stationery, College fees)</option>
+                <option value="Shopping & Personal">🛍️ Shopping & Personal (Clothes, Grooming)</option>
+                <option value="Entertainment">🎬 Entertainment (Movies, Games, Outings)</option>
+                <option value="Other">📦 Other (Miscellaneous)</option>
+              </select>
+              <span class="field-error" id="errorCategory"></span>
+            </div>
+
+            <!-- Quick Subcategory Suggestions Chips -->
+            <div class="subcategory-chips-group" id="quickChipsContainer" style="display: none;">
+              <span class="chips-label">Quick suggestions:</span>
+              <div class="chips-wrapper" id="quickChipsList">
+                <!-- Dynamically rendered based on selected category -->
+              </div>
+            </div>
+
+            <!-- Note / Memo -->
+            <div class="form-group">
+              <label for="expenseNote" class="form-label">Optional Note</label>
+              <input type="text" id="expenseNote" class="form-control" placeholder="e.g. Bought 250g paneer from local dairy" autocomplete="off">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="btnAddExpense">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add Expense
+            </button>
+          </form>
+        </section>
+
+        <!-- SECTION 11: CATEGORY BREAKDOWN & CHART.JS DOUGHNUT -->
+        <section class="card category-chart-card" aria-label="Category-wise Spending Breakdown">
+          <div class="card-head-title">
+            <div class="pill-badge pill-lavender">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+            </div>
+            <div>
+              <h3 class="section-title">Category Breakdown</h3>
+              <p class="section-subtitle">Visual distribution of monthly expenditure</p>
+            </div>
+          </div>
+
+          <!-- Chart.js Container -->
+          <div class="chart-wrapper">
+            <canvas id="categoryChart" width="280" height="280" aria-label="Category expenditure doughnut chart" role="img"></canvas>
+            <div class="chart-empty-state" id="chartEmptyState" style="display: none;">
+              <p>No expenses recorded yet for this month.</p>
+            </div>
+          </div>
+
+          <!-- Category Progress Bars List -->
+          <div class="category-bars-list" id="categoryBarsList">
+            <!-- Dynamically populated with category names, amounts, % of total and % of budget -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- SECTION 10: EXPENSE HISTORY TABLE & SEARCH -->
+      <section class="card expense-history-card" aria-label="Expense History Table and Management">
+        <div class="history-header">
+          <div class="history-title-group">
+            <h3 class="section-title">Expense History</h3>
+            <p class="section-subtitle">Manage, edit, filter, and search your transactions</p>
+          </div>
+          <div class="history-controls">
+            <!-- Search Input -->
+            <div class="search-box">
+              <svg class="icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="expenseSearchInput" class="form-control search-input" placeholder="Search by title or note..." aria-label="Search expenses">
+            </div>
+
+            <!-- Filter by Category -->
+            <select id="expenseCategoryFilter" class="form-control select-control filter-select" aria-label="Filter expenses by category">
+              <option value="ALL">All Categories</option>
+              <option value="Gym">Gym</option>
+              <option value="Food & Diet">Food & Diet</option>
+              <option value="Travel">Travel</option>
+              <option value="Mobile & Internet">Mobile & Internet</option>
+              <option value="Education">Education</option>
+              <option value="Shopping & Personal">Shopping & Personal</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <!-- Sort Toggle -->
+            <button type="button" class="btn btn-secondary btn-icon-text" id="btnSortDate" title="Toggle date sorting">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5h10M11 9h7M11 13h4"/><path d="M3 17l3 3 3-3M6 18V4"/></svg>
+              <span id="sortOrderLabel">Newest First</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- History Table / Responsive List -->
+        <div class="table-responsive">
+          <table class="history-table" id="expenseTable">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col" class="text-right">Amount</th>
+                <th scope="col">Note</th>
+                <th scope="col" class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expenseTableBody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State Message -->
+        <div class="empty-history-state" id="emptyHistoryState" style="display: none;">
+          <div class="empty-icon-bubble">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <h4>No Expenses Found</h4>
+          <p id="emptyStateMsg">You haven't added any expenses for this month yet. Use the form above to add your first expense!</p>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <p>&copy; 2026 <strong>Tushar</strong> &bull; Monthly Budget Calculator &bull; Built with HTML5, CSS3 &amp; Vanilla JavaScript</p>
+        <p class="footer-note">All records are safely persisted locally in your browser's LocalStorage.</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- MODAL: EDIT EXPENSE -->
+  <div class="modal-backdrop" id="editExpenseModal" aria-hidden="true" role="dialog" aria-labelledby="modalEditTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalEditTitle">Edit Expense</h3>
+        <button type="button" class="btn-close" id="btnCloseEditModal" aria-label="Close modal">&times;</button>
+      </div>
+      <form id="editExpenseForm" novalidate>
+        <input type="hidden" id="editExpenseId">
+        
+        <div class="form-group">
+          <label for="editExpenseTitle" class="form-label">Expense Title <span class="required-star">*</span></label>
+          <input type="text" id="editExpenseTitle" class="form-control" required autocomplete="off">
+          <span class="field-error" id="editErrorTitle"></span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group form-col">
+            <label for="editExpenseAmount" class="form-label">Amount (₹) <span class="required-star">*</span></label>
+            <div class="input-with-symbol">
+              <span class="currency-symbol">₹</span>
+              <input type="number" id="editExpenseAmount" class="form-control" min="0.01" step="any" required>
+            </div>
+            <span class="field-error" id="editErrorAmount"></span>
+          </div>
+
+          <div class="form-group form-col">
+            <label for="editExpenseDate" class="form-label">Date <span class="required-star">*</span></label>
+            <input type="date" id="editExpenseDate" class="form-control" required>
+            <span class="field-error" id="editErrorDate"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editExpenseCategory" class="form-label">Category <span class="required-star">*</span></label>
+          <select id="editExpenseCategory" class="form-control select-control" required>
+            <!-- Populated dynamically with all categories -->
+          </select>
+          <span class="field-error" id="editErrorCategory"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="editExpenseNote" class="form-label">Note</label>
+          <input type="text" id="editExpenseNote" class="form-control" autocomplete="off">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="btnCancelEdit">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveEdit">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRM DELETE -->
+  <div class="modal-backdrop" id="deleteConfirmModal" aria-hidden="true" role="dialog" aria-labelledby="modalDeleteTitle">
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalDeleteTitle">Delete Expense</h3>
+        <button type="button" class="btn-close" id="btnCloseDeleteModal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to permanently delete this expense? This action cannot be undone.</p>
+        <p class="delete-item-preview"><strong id="deleteExpenseName">Expense Item</strong> (<span id="deleteExpenseCost">₹0</span>)</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="btnCancelDelete">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Delete Expense</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD CUSTOM CATEGORY -->
+  <div class="modal-backdrop" id="customCatModal" aria-hidden="true" role="dialog" aria-labelledby="modalCatTitle">
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalCatTitle">Add Custom Category</h3>
+        <button type="button" class="btn-close" id="btnCloseCatModal" aria-label="Close modal">&times;</button>
+      </div>
+      <form id="customCatForm" novalidate>
+        <div class="form-group">
+          <label for="customCatName" class="form-label">Category Name <span class="required-star">*</span></label>
+          <input type="text" id="customCatName" class="form-control" placeholder="e.g. Health & Meds, Tech Gadgets" required autocomplete="off">
+          <span class="field-error" id="customCatError"></span>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="btnCancelCustomCat">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRM RESET MONTH -->
+  <div class="modal-backdrop" id="resetConfirmModal" aria-hidden="true" role="dialog" aria-labelledby="modalResetTitle">
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalResetTitle">Reset Month Data</h3>
+        <button type="button" class="btn-close" id="btnCloseResetModal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to reset all data for <strong id="resetMonthPromptName">this month</strong>? All expenses for this month will be cleared and the budget reset to ₹9,000.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="btnCancelReset">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmReset">Reset Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
+</body>
+>>>>>>> 57d7feda4aa3efa2791f8d72c16559fcc055f52d
 </html>
