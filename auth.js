@@ -40,18 +40,6 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  async function hashPassword(password) {
-    if (window.crypto && window.crypto.subtle && window.TextEncoder) {
-      const bytes = new TextEncoder().encode(password);
-      const digest = await window.crypto.subtle.digest("SHA-256", bytes);
-      return Array.from(new Uint8Array(digest))
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join("");
-    }
-
-    return btoa(unescape(encodeURIComponent(password)));
-  }
-
   function setActiveSession(user) {
     localStorage.setItem(SESSION_KEY, JSON.stringify({
       id: user.id,
@@ -91,6 +79,21 @@
     });
   }
 
+  async function verifyLegacyPassword(user, password) {
+    if (!user || !user.passwordHash) return false;
+
+    if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+      const bytes = new TextEncoder().encode(password);
+      const digest = await window.crypto.subtle.digest("SHA-256", bytes);
+      const hash = Array.from(new Uint8Array(digest))
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+      return user.passwordHash === hash;
+    }
+
+    return user.passwordHash === btoa(unescape(encodeURIComponent(password)));
+  }
+
   async function handleRegister() {
     const name = fields.name.value.trim();
     const email = normalizeEmail(fields.email.value);
@@ -127,7 +130,7 @@
       id: `user-${Date.now()}`,
       name,
       email,
-      passwordHash: await hashPassword(password),
+      authMode: "local-demo",
       createdAt: new Date().toISOString()
     };
 
@@ -149,9 +152,13 @@
 
     const users = readUsers();
     const user = users.find((savedUser) => savedUser.email === email);
-    const passwordHash = await hashPassword(password);
 
-    if (!user || user.passwordHash !== passwordHash) {
+    if (!user) {
+      showAlert("Incorrect email or password.", "error");
+      return;
+    }
+
+    if (user.passwordHash && !(await verifyLegacyPassword(user, password))) {
       showAlert("Incorrect email or password.", "error");
       return;
     }

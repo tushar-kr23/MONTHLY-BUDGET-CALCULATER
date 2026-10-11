@@ -52,6 +52,10 @@
   let sortNewestFirst = true;
   let chartInstance = null;
   let pendingDeleteId = null;
+  let isBudgetEditing = false;
+  let isSavingsEditing = false;
+  let budgetEditSnapshot = null;
+  let savingsEditSnapshot = null;
 
   // ----------------------------------------------------------------------------
   // 3. DOM ELEMENT REFERENCES
@@ -361,6 +365,58 @@
     return appData.months[key];
   }
 
+  function normalizeMoneyInput(value) {
+    const trimmed = String(value).trim();
+    if (trimmed === "") return null;
+
+    const amount = Number(trimmed);
+    if (!Number.isFinite(amount) || amount < 0) return null;
+
+    return Math.round(amount * 100) / 100;
+  }
+
+  function setBudgetEditMode(isEditing) {
+    isBudgetEditing = isEditing;
+
+    if (isEditing) {
+      budgetEditSnapshot = Number(getCurrentMonthData().budget) || 0;
+      DOM.monthlyBudgetInput.removeAttribute("readonly");
+      DOM.btnEditBudget.style.display = "none";
+      DOM.btnSaveBudget.style.display = "inline-flex";
+      DOM.btnCancelBudget.style.display = "inline-flex";
+      DOM.monthlyBudgetInput.focus();
+      DOM.monthlyBudgetInput.select();
+      return;
+    }
+
+    budgetEditSnapshot = null;
+    DOM.monthlyBudgetInput.setAttribute("readonly", "true");
+    DOM.btnEditBudget.style.display = "inline-flex";
+    DOM.btnSaveBudget.style.display = "none";
+    DOM.btnCancelBudget.style.display = "none";
+  }
+
+  function setSavingsEditMode(isEditing) {
+    isSavingsEditing = isEditing;
+
+    if (isEditing) {
+      savingsEditSnapshot = Number(getCurrentMonthData().savingsTarget) || 0;
+      DOM.savingsTargetInput.removeAttribute("readonly");
+      DOM.btnEditSavings.style.display = "none";
+      DOM.btnSaveSavings.style.display = "inline-flex";
+      DOM.btnCancelSavings.style.display = "inline-flex";
+      DOM.savingsTargetInput.focus();
+      DOM.savingsTargetInput.select();
+      return;
+    }
+
+    savingsEditSnapshot = null;
+    DOM.savingsTargetInput.setAttribute("readonly", "true");
+    DOM.btnEditSavings.style.display = "inline-flex";
+    DOM.btnSaveSavings.style.display = "none";
+    DOM.btnCancelSavings.style.display = "none";
+  }
+
   // ----------------------------------------------------------------------------
   // 5. FORMATTING & MATH UTILITIES
   // ----------------------------------------------------------------------------
@@ -471,8 +527,12 @@
     DOM.expenseDate.max = `${YEAR}-${monthStr}-${String(lastDay).padStart(2, "0")}`;
 
     // 3. Render Budget Inputs
-    DOM.monthlyBudgetInput.value = budget;
-    DOM.savingsTargetInput.value = savingsTarget > 0 ? savingsTarget : "";
+    if (!isBudgetEditing) {
+      DOM.monthlyBudgetInput.value = budget;
+    }
+    if (!isSavingsEditing) {
+      DOM.savingsTargetInput.value = savingsTarget > 0 ? savingsTarget : "";
+    }
 
     // 4. Render Summary Cards
     DOM.displayMonthlyBudget.textContent = formatINR(budget);
@@ -811,6 +871,15 @@
 
   function switchMonth(index) {
     if (index < 0 || index >= 12) return;
+    if (isBudgetEditing) {
+      DOM.monthlyBudgetInput.value = budgetEditSnapshot ?? (Number(getCurrentMonthData().budget) || 0);
+      setBudgetEditMode(false);
+    }
+    if (isSavingsEditing) {
+      const savedTarget = savingsEditSnapshot ?? (Number(getCurrentMonthData().savingsTarget) || 0);
+      DOM.savingsTargetInput.value = savedTarget > 0 ? savedTarget : "";
+      setSavingsEditMode(false);
+    }
     currentMonthIndex = index;
     DOM.expenseSearchInput.value = "";
     DOM.expenseCategoryFilter.value = "ALL";
@@ -891,69 +960,52 @@
   DOM.btnLogout.addEventListener("click", logoutActiveUser);
 
   DOM.btnEditBudget.addEventListener("click", () => {
-    DOM.monthlyBudgetInput.removeAttribute("readonly");
-    DOM.monthlyBudgetInput.focus();
-    DOM.btnEditBudget.style.display = "none";
-    DOM.btnSaveBudget.style.display = "inline-flex";
-    DOM.btnCancelBudget.style.display = "inline-flex";
+    setBudgetEditMode(true);
   });
 
   DOM.btnCancelBudget.addEventListener("click", () => {
     const monthData = getCurrentMonthData();
-    DOM.monthlyBudgetInput.value = monthData.budget;
-    DOM.monthlyBudgetInput.setAttribute("readonly", "true");
-    DOM.btnEditBudget.style.display = "inline-flex";
-    DOM.btnSaveBudget.style.display = "none";
-    DOM.btnCancelBudget.style.display = "none";
+    DOM.monthlyBudgetInput.value = budgetEditSnapshot ?? (Number(monthData.budget) || 0);
+    setBudgetEditMode(false);
   });
 
   DOM.btnSaveBudget.addEventListener("click", () => {
-    const val = Number(DOM.monthlyBudgetInput.value);
-    if (isNaN(val) || val < 0) {
+    const val = normalizeMoneyInput(DOM.monthlyBudgetInput.value);
+    if (val === null) {
       showToast("Budget must be a valid non-negative number", "error");
+      DOM.monthlyBudgetInput.focus();
       return;
     }
     const monthData = getCurrentMonthData();
-    monthData.budget = Math.round(val * 100) / 100;
+    monthData.budget = val;
     saveDataToStorage();
-    DOM.monthlyBudgetInput.setAttribute("readonly", "true");
-    DOM.btnEditBudget.style.display = "inline-flex";
-    DOM.btnSaveBudget.style.display = "none";
-    DOM.btnCancelBudget.style.display = "none";
+    setBudgetEditMode(false);
     showToast(`Budget for ${MONTH_NAMES[currentMonthIndex]} updated to ${formatINR(monthData.budget)}`);
     updateDashboard();
   });
 
   DOM.btnEditSavings.addEventListener("click", () => {
-    DOM.savingsTargetInput.removeAttribute("readonly");
-    DOM.savingsTargetInput.focus();
-    DOM.btnEditSavings.style.display = "none";
-    DOM.btnSaveSavings.style.display = "inline-flex";
-    DOM.btnCancelSavings.style.display = "inline-flex";
+    setSavingsEditMode(true);
   });
 
   DOM.btnCancelSavings.addEventListener("click", () => {
     const monthData = getCurrentMonthData();
-    DOM.savingsTargetInput.value = monthData.savingsTarget || "";
-    DOM.savingsTargetInput.setAttribute("readonly", "true");
-    DOM.btnEditSavings.style.display = "inline-flex";
-    DOM.btnSaveSavings.style.display = "none";
-    DOM.btnCancelSavings.style.display = "none";
+    const savedTarget = savingsEditSnapshot ?? (Number(monthData.savingsTarget) || 0);
+    DOM.savingsTargetInput.value = savedTarget > 0 ? savedTarget : "";
+    setSavingsEditMode(false);
   });
 
   DOM.btnSaveSavings.addEventListener("click", () => {
-    const val = Number(DOM.savingsTargetInput.value);
-    if (isNaN(val) || val < 0) {
-      showToast("Savings target cannot be negative", "error");
+    const val = normalizeMoneyInput(DOM.savingsTargetInput.value);
+    if (val === null) {
+      showToast("Savings target must be a valid non-negative number", "error");
+      DOM.savingsTargetInput.focus();
       return;
     }
     const monthData = getCurrentMonthData();
-    monthData.savingsTarget = Math.round(val * 100) / 100;
+    monthData.savingsTarget = val;
     saveDataToStorage();
-    DOM.savingsTargetInput.setAttribute("readonly", "true");
-    DOM.btnEditSavings.style.display = "inline-flex";
-    DOM.btnSaveSavings.style.display = "none";
-    DOM.btnCancelSavings.style.display = "none";
+    setSavingsEditMode(false);
     showToast(`Savings target updated to ${formatINR(monthData.savingsTarget)}`);
     updateDashboard();
   });
